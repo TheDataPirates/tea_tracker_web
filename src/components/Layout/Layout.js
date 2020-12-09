@@ -1,34 +1,31 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    title: {
-        flexGrow: 1,
-    },
-}));
-const Layout = (props)=>{
-    const classes = useStyles();
-    return (
-        <div className={classes.root}>
-            <AppBar position="static">
-                <Toolbar>
+import React,{Fragment,useState}from 'react';
+import Toolbar from "../Navigation/Toolbar/Toolbar";
+import classes from'./Layout.module.css'
+import SideDrawer from "../Navigation/SideDrawer/SideDrawer";
 
-                    <Typography variant="h6" className={classes.title}>
-                        Kudamalana Tea State
-                    </Typography>
-                    <Button color="inherit">Login</Button>
-                </Toolbar>
-            </AppBar>
-            {props.children}
-        </div>
-    );
+const Layout = (props)=> {
+    const [sideDrawerIsVisible, setSideDrawerIsVisible] = useState(false);
+
+    const sideDrawerClosedHandler = () => {
+        setSideDrawerIsVisible(false);
+    };
+
+    const sideDrawerToggleHandler = () => {
+        setSideDrawerIsVisible(!sideDrawerIsVisible);
+    };
+
+
+  return(<Fragment>
+      <Toolbar
+          // isAuth={props.isAuthenticated}
+          drawerToggleClicked={sideDrawerToggleHandler}
+      />
+      <SideDrawer
+          // isAuth={props.isAuthenticated}
+          open={sideDrawerIsVisible}
+          closed={sideDrawerClosedHandler}
+      />
+      <main className={classes.Content}>{props.children}</main>
+  </Fragment>);
 };
 export default Layout;
